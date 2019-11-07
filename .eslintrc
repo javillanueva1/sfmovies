@@ -2,5 +2,8 @@
   extends: "lob",
   globals: {
     expect: false
+  },
+  parserOptions: {
+    "emcaVersion": 2018
   }
 }
