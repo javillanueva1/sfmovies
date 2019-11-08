@@ -4,6 +4,6 @@
     expect: false
   },
   parserOptions: {
-    "emcaVersion": 2018
+    "ecmaVersion": 2018
   }
 }
