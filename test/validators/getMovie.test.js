@@ -6,17 +6,35 @@ const GetMovieValidator = require('../../lib/validators/getMovie');
 
 describe('get movie validator', () => {
 
-  describe('exact', () => {
+  describe('exactTitle', () => {
 
     it('defaults to false', () => {
       const query = {};
       const result = Joi.validate(query, GetMovieValidator);
 
-      expect(result.value.exact).to.eql(false);
+      expect(result.value.exactTitle).to.eql(false);
     });
 
     it('accepts true or false', () => {
-      const query = { exact: 'maybe' };
+      const query = { exactTitle: 'maybe' };
+      const result = Joi.validate(query, GetMovieValidator);
+
+      expect(result.error.details[0].type).to.eql('boolean.base');
+    });
+
+  });
+
+  describe('exactLocation', () => {
+
+    it('defaults to false', () => {
+      const query = {};
+      const result = Joi.validate(query, GetMovieValidator);
+
+      expect(result.value.exactLocation).to.eql(false);
+    });
+
+    it('accepts true or false', () => {
+      const query = { exactLocation: 'maybe' };
       const result = Joi.validate(query, GetMovieValidator);
 
       expect(result.error.details[0].type).to.eql('boolean.base');
@@ -74,6 +92,24 @@ describe('get movie validator', () => {
       const result = Joi.validate(query, GetMovieValidator);
 
       expect(result.error.details[0].type).to.eql('number.integer');
+    });
+
+  });
+
+  describe('location', () => {
+
+    it('defaults to empty string', () => {
+      const query = {};
+      const result = Joi.validate(query, GetMovieValidator);
+
+      expect(result.value.title).to.eql('');
+    });
+
+    it('is shorter than 255 characters', () => {
+      const query = { title: 'a'.repeat(256) };
+      const result = Joi.validate(query, GetMovieValidator);
+
+      expect(result.error.details[0].type).to.eql('string.max');
     });
 
   });
