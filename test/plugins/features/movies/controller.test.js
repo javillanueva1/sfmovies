@@ -24,8 +24,8 @@ describe('movie controller', () => {
     describe('retrieves all matching movies', () => {
 
       before(async () => {
-        const payload1 = { title: 'Mrs. Doubtfire', release_year: '1993' };
-        const payload2 = { title: 'Mrs. Doubtfire 2: Electric Boogaloo', release_year: '2103' };
+        const payload1 = { title: 'Mrs. Doubtfire', release_year: '1993', locations: ['San Francisco'] };
+        const payload2 = { title: 'Mrs. Doubtfire 2: Electric Boogaloo', release_year: '2103', locations: ['San Diego'] };
 
         await Controller.create(payload1);
         await Controller.create(payload2);
@@ -87,6 +87,35 @@ describe('movie controller', () => {
 
     });
 
+  });
+
+  describe('updateLocation', () => {
+
+    it('updates a movie location', async () => {
+      const payload = { title: 'WALL-E', locations: ['Space'] };
+
+      const movie = await Controller.create(payload);
+
+      expect(movie.get('title')).to.eql(payload.title);
+      expect(movie.get('locations')).to.eql(payload.locations);
+
+      const request = {
+        params: {
+          id: movie.id
+        },
+        payload: {
+          locations: ['Earth']
+        }
+      };
+
+      const updatedMovie = await Controller.updateLocations(request);
+
+      expect(updatedMovie.get('title')).to.eql(payload.title);
+      expect(updatedMovie.get('locations')).to.eql(payload.locations.concat(request.payload.locations));
+
+      await Knex('movies').truncate();
+    });
+    
   });
 
 });
