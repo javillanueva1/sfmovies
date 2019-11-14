@@ -67,10 +67,10 @@ describe('movie controller', () => {
 
       it('filtered by fuzzy search on the title', async () => {
         const request = { query: {
-          exact: 'false',
-          title: 'Electric',
           startYear: 1878,
-          endYear: 9999
+          endYear: 9999,
+          exactTitle: 'false',
+          title: 'Electric'
         } };
 
         const movies = await Controller.get(request);
@@ -112,6 +112,40 @@ describe('movie controller', () => {
         expect(movies.models[0].get('release_year')).to.eql(1993);
       });
 
+      it('filtered by fuzzy search on the location', async () => {
+        const request = { query: {
+          exactLocation: 'false',
+          exactTitle: 'false',
+          title: '',
+          startYear: 1878,
+          endYear: 9999,
+          location: 'Die'
+        } };
+
+        const movies = await Controller.get(request);
+
+        expect(movies.models.length).to.eql(1);
+        expect(movies.models[0].get('name')).to.eql('Mrs. Doubtfire 2: Electric Boogaloo');
+        expect(movies.models[0].get('release_year')).to.eql(2103);
+      });
+
+      it('filtered by exact search on the location', async () => {
+        const request = { query: {
+          exactLocation: 'true',
+          exactTitle: 'false',
+          title: '',
+          startYear: 1878,
+          endYear: 9999,
+          location: 'San Francisco'
+        } };
+
+        const movies = await Controller.get(request);
+
+        expect(movies.models.length).to.eql(1);
+        expect(movies.models[0].get('name')).to.eql('Mrs. Doubtfire');
+        expect(movies.models[0].get('release_year')).to.eql(1993);
+      });
+
     });
 
   });
@@ -142,7 +176,7 @@ describe('movie controller', () => {
 
       await Knex('movies').truncate();
     });
-    
+
   });
 
 });
