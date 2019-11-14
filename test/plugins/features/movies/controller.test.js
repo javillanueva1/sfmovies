@@ -176,7 +176,7 @@ describe('movie controller', () => {
 
       await Knex('movies').truncate();
     });
-
+    
   });
 
 });
