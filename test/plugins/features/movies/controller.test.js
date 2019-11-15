@@ -37,7 +37,10 @@ describe('movie controller', () => {
 
       it('filtered by start year', async () => {
         const request = { query: {
-          startYear: 2100
+          exact: false,
+          title: '',
+          startYear: 2100,
+          endYear: 9999
         } };
 
         const movies = await Controller.get(request);
@@ -49,6 +52,9 @@ describe('movie controller', () => {
 
       it('filtered by end year', async () => {
         const request = { query: {
+          exact: false,
+          title: '',
+          startYear: 1878,
           endYear: 2000
         } };
 
@@ -62,7 +68,9 @@ describe('movie controller', () => {
       it('filtered by fuzzy search on the title', async () => {
         const request = { query: {
           exact: 'false',
-          title: 'Electric'
+          title: 'Electric',
+          startYear: 1878,
+          endYear: 9999
         } };
 
         const movies = await Controller.get(request);
@@ -75,7 +83,9 @@ describe('movie controller', () => {
       it('filtered by exact search on the title', async () => {
         const request = { query: {
           exact: 'true',
-          title: 'Mrs. Doubtfire'
+          title: 'Mrs. Doubtfire',
+          startYear: 1878,
+          endYear: 9999
         } };
 
         const movies = await Controller.get(request);
