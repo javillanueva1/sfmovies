@@ -5,6 +5,10 @@ const Knex   = require('../../../../lib/libraries/knex');
 
 describe('movies integration', () => {
 
+  before(async () => {
+    await Knex('movies').truncate();
+  });
+
   describe('create', () => {
 
     it('creates a movie', async () => {
