@@ -5,6 +5,10 @@ const Knex       = require('../../../../lib/libraries/knex');
 
 describe('movie controller', () => {
 
+  before(async () => {
+    await Knex('movies').truncate();
+  });
+
   describe('create', () => {
 
     it('creates a movie', async () => {
@@ -29,10 +33,6 @@ describe('movie controller', () => {
 
         await Controller.create(payload1);
         await Controller.create(payload2);
-      });
-
-      after(async () => {
-        await Knex('movies').truncate();
       });
 
       it('filtered by start year', async () => {
@@ -82,10 +82,27 @@ describe('movie controller', () => {
 
       it('filtered by exact search on the title', async () => {
         const request = { query: {
-          exact: 'true',
+          exactTitle: 'true',
           title: 'Mrs. Doubtfire',
           startYear: 1878,
           endYear: 9999
+        } };
+
+        const movies = await Controller.get(request);
+
+        expect(movies.models.length).to.eql(1);
+        expect(movies.models[0].get('name')).to.eql('Mrs. Doubtfire');
+        expect(movies.models[0].get('release_year')).to.eql(1993);
+      });
+
+      it('filtered by exact search on the year', async () => {
+        const request = { query: {
+          exactTitle: 'false',
+          exactYear: 'true',
+          title: 'Mrs. Doubtfire',
+          startYear: 1878,
+          endYear: 9999,
+          year: 1993
         } };
 
         const movies = await Controller.get(request);
