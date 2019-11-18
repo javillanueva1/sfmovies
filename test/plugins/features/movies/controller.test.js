@@ -5,7 +5,7 @@ const Knex       = require('../../../../lib/libraries/knex');
 
 describe('movie controller', () => {
 
-  before(async () => {
+  beforeEach(async () => {
     await Knex('movies').truncate();
   });
 
@@ -17,8 +17,6 @@ describe('movie controller', () => {
       const movie = await Controller.create(payload);
 
       expect(movie.get('title')).to.eql(payload.title);
-
-      await Knex('movies').truncate();
     });
 
   });
@@ -27,7 +25,7 @@ describe('movie controller', () => {
 
     describe('retrieves all matching movies', () => {
 
-      before(async () => {
+      beforeEach(async () => {
         const payload1 = { title: 'Mrs. Doubtfire', release_year: '1993' };
         const payload2 = { title: 'Mrs. Doubtfire 2: Electric Boogaloo', release_year: '2103' };
 

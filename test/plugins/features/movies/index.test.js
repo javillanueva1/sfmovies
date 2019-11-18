@@ -5,7 +5,7 @@ const Knex   = require('../../../../lib/libraries/knex');
 
 describe('movies integration', () => {
 
-  before(async () => {
+  beforeEach(async () => {
     await Knex('movies').truncate();
   });
 
@@ -20,8 +20,6 @@ describe('movies integration', () => {
       expect(response.statusCode).to.eql(200);
       expect(response.result.object).to.eql('movie');
       expect(response.result.title).to.eql('Volver');
-
-      await Knex.truncate('movies');
     });
 
   });
