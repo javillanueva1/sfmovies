@@ -65,7 +65,7 @@ describe('movie controller', () => {
 
       it('filtered by fuzzy search on the title', async () => {
         const request = { query: {
-          exact: 'false',
+          exact: false,
           title: 'Electric',
           startYear: 1878,
           endYear: 9999
@@ -80,7 +80,7 @@ describe('movie controller', () => {
 
       it('filtered by exact search on the title', async () => {
         const request = { query: {
-          exactTitle: 'true',
+          exact: true,
           title: 'Mrs. Doubtfire',
           startYear: 1878,
           endYear: 9999
@@ -95,7 +95,7 @@ describe('movie controller', () => {
 
       it('filtered by exact search on the year', async () => {
         const request = { query: {
-          exactTitle: 'false',
+          exact: false,
           exactYear: 'true',
           title: 'Mrs. Doubtfire',
           startYear: 1878,

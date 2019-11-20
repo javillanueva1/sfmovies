@@ -1,40 +1,22 @@
 'use strict';
 
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 
 const GetMovieValidator = require('../../lib/validators/getMovie');
 
 describe('get movie validator', () => {
 
-  describe('exactTitle', () => {
+  describe('exact', () => {
 
     it('defaults to false', () => {
       const query = {};
       const result = Joi.validate(query, GetMovieValidator);
 
-      expect(result.value.exactTitle).to.eql(false);
+      expect(result.value.exact).to.eql(false);
     });
 
     it('accepts true or false', () => {
-      const query = { exactTitle: 'maybe' };
-      const result = Joi.validate(query, GetMovieValidator);
-
-      expect(result.error.details[0].type).to.eql('boolean.base');
-    });
-
-  });
-
-  describe('exactYear', () => {
-
-    it('defaults to false', () => {
-      const query = {};
-      const result = Joi.validate(query, GetMovieValidator);
-
-      expect(result.value.exactYear).to.eql(false);
-    });
-
-    it('accepts true or false', () => {
-      const query = { exactYear: 'maybe' };
+      const query = { exact: 'maybe' };
       const result = Joi.validate(query, GetMovieValidator);
 
       expect(result.error.details[0].type).to.eql('boolean.base');
@@ -62,13 +44,6 @@ describe('get movie validator', () => {
 
   describe('startYear', () => {
 
-    it('defaults to 1878', () => {
-      const query = {};
-      const result = Joi.validate(query, GetMovieValidator);
-
-      expect(result.value.startYear).to.eql(1878);
-    });
-
     it('is after 1878', () => {
       const query = { startYear: 1000 };
       const result = Joi.validate(query, GetMovieValidator);
@@ -86,13 +61,6 @@ describe('get movie validator', () => {
   });
 
   describe('endYear', () => {
-
-    it('defaults to 9999', () => {
-      const query = {};
-      const result = Joi.validate(query, GetMovieValidator);
-
-      expect(result.value.endYear).to.eql(9999);
-    });
 
     it('is before 9999', () => {
       const query = { endYear: 99999 };
@@ -113,45 +81,45 @@ describe('get movie validator', () => {
   describe('year', () => {
 
     it('is a number', () => {
-      const query = { exactYear: true, year: 'Hoopla' };
+      const query = { year: 'Hoopla' };
       const result = Joi.validate(query, GetMovieValidator);
 
       expect(result.error.details[0].type).to.eql('number.base');
     });
 
     it('is an integer', () => {
-      const query = { exactYear: true, year: 1996.6 };
+      const query = { year: 1996.6 };
       const result = Joi.validate(query, GetMovieValidator);
 
       expect(result.error.details[0].type).to.eql('number.integer');
     });
 
     it('is after 1878', () => {
-      const query = { exactYear: true,  year: 1000 };
+      const query = {  year: 1000 };
       const result = Joi.validate(query, GetMovieValidator);
 
       expect(result.error.details[0].type).to.eql('number.min');
     });
 
     it('is before 9999', () => {
-      const query = { exactYear: true, year: 99999 };
+      const query = { year: 99999 };
       const result = Joi.validate(query, GetMovieValidator);
 
       expect(result.error.details[0].type).to.eql('number.max');
     });
 
-    it('is required if exactYear is true', () => {
-      const query = { exactYear: true };
+    it('cannot be present alongside startYear', () => {
+      const query = { year: 1950, startYear: 1952 };
       const result = Joi.validate(query, GetMovieValidator);
 
-      expect(result.error.details[0].type).to.eql('any.required');
+      expect(result.error.details[0].type).to.eql('object.oxor');
     });
 
-    it('is optional if exactYear is false', () => {
-      const query = { exactYear: false };
+    it('cannot be present alongside endYear', () => {
+      const query = { year: 1950, endYear: 1952 };
       const result = Joi.validate(query, GetMovieValidator);
 
-      expect(result.error).to.be.null;
+      expect(result.error.details[0].type).to.eql('object.oxor');
     });
 
   });
