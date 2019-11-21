@@ -3,7 +3,8 @@
 exports.up = async (knex) => {
   await knex.schema.createTable('locations', (table) => {
     table.increments('id').primary();
-    table.text('name');
+    table.text('name').notNullable();
+    table.unique('name');
   });
 
   await knex.schema.createTable('location_movies', (table) => {
