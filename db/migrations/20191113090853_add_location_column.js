@@ -10,8 +10,8 @@ exports.up = async (knex) => {
   await knex.schema.createTable('location_movies', (table) => {
     table.integer('movie_id');
     table.integer('location_id');
-    table.foreign('movie_id').references('movies.id');
-    table.foreign('location_id').references('locations.id');
+    table.foreign('movie_id').references('movies.id').onDelete('CASCADE');
+    table.foreign('location_id').references('locations.id').onDelete('CASCADE');
   });
 };
 
