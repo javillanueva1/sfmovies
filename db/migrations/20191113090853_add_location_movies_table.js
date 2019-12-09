@@ -7,7 +7,7 @@ exports.up = async (knex) => {
     table.unique('name');
   });
 
-  await knex.schema.createTable('location_movies', (table) => {
+  await knex.schema.createTable('locations_movies', (table) => {
     table.integer('movie_id');
     table.integer('location_id');
     table.foreign('movie_id').references('movies.id');
@@ -16,6 +16,6 @@ exports.up = async (knex) => {
 };
 
 exports.down = async (knex) => {
-  await knex.schema.dropTable('location_movies');
+  await knex.schema.dropTable('locations_movies');
   await knex.schema.dropTable('location');
 };
