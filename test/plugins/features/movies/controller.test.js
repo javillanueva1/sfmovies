@@ -18,7 +18,7 @@ describe('movie controller', () => {
 
       const movie = await Controller.create(payload);
 
-      expect(movie.attributes.name).to.eql(payload.title);
+      expect(movie.attributes.name).to.eql('WALL-E');
     });
 
   });
@@ -150,8 +150,8 @@ describe('movie controller', () => {
 
       const movie = await Controller.create(payload);
 
-      expect(movie.attributes.name).to.eql(payload.title);
-      expect(movie.attributes.locations).to.eql(payload.locations);
+      expect(movie.attributes.name).to.eql('WALL-E');
+      expect(movie.attributes.locations).to.eql(['Space']);
 
       const request = {
         params: {
@@ -164,10 +164,8 @@ describe('movie controller', () => {
 
       const updatedMovie = await Controller.updateLocations(request);
 
-      payload.locations.push(request.payload.location);
-
-      expect(updatedMovie.attributes.name).to.eql(payload.title);
-      expect(updatedMovie.attributes.locations).to.eql(payload.locations);
+      expect(updatedMovie.attributes.name).to.eql('WALL-E');
+      expect(updatedMovie.attributes.locations).to.eql(['Space', 'Earth']);
     });
 
   });
