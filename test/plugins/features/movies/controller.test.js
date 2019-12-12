@@ -2,6 +2,9 @@
 
 const Controller = require('../../../../lib/plugins/features/movies/controller');
 const Knex       = require('../../../../lib/libraries/knex');
+const Sinon      = require('sinon');
+const Location   = require('../../../../lib/models/location');
+const Util       = require('util');
 
 describe('movie controller', () => {
 
@@ -19,6 +22,19 @@ describe('movie controller', () => {
       const movie = await Controller.create(payload);
 
       expect(movie.attributes.name).to.eql('WALL-E');
+    });
+
+    it('throws an error', async () => {
+      const UtilLogSpy = Sinon.spy(Util, 'log');
+      const stub = Sinon.stub(Location.prototype, 'fetch').returns(Promise.reject('SomeError'));
+
+      const payload = { title: 'WALL-E', locations: ['San Francisco'] };
+
+      await Controller.create(payload);
+
+      expect(UtilLogSpy.calledOnce).to.be.true;
+      stub.restore();
+      Util.log.restore();
     });
 
   });

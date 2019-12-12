@@ -33,14 +33,15 @@
     "test": "NODE_ENV=test istanbul cover _mocha -- test --require test/setup.js --recursive --timeout 30000",
     "test:raw": "NODE_ENV=test mocha test --require test/setup.js --recursive --timeout 30000"
   },
-
   "dependencies": {
+    "@hapi/joi": "15.1.1",
     "bookshelf": "^1.0.1",
+    "chai-as-promised": "^7.1.1",
     "hapi": "16.6.1",
     "hapi-bookshelf-serializer": "2.1.0",
     "hapi-format-error": "^2.1.0",
-    "@hapi/joi": "15.1.1",
     "knex": "^0.20.1",
-    "pg": "^7.12.1"
+    "pg": "^7.12.1",
+    "sinon": "^7.5.0"
   }
 }
